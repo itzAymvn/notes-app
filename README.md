@@ -2,7 +2,7 @@
 
 A simple note-taking application built with React Native and Expo.
 
-![Notes App](./assets/images/preview.png)
+![Notes App](./public/images/og.png)
 
 ## Table of Contents
 

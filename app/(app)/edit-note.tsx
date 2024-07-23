@@ -29,6 +29,7 @@ export default function ViewNote() {
 		control,
 		handleSubmit,
 		formState: { errors, isSubmitting },
+		reset,
 	} = useForm()
 
 	const [note, setNote] = useState<TNote | null>(null)
@@ -50,6 +51,15 @@ export default function ViewNote() {
 		setNote(note)
 	}, [id])
 
+	useEffect(() => {
+		if (note) {
+			reset({
+				title: note.title,
+				content: note.content,
+			})
+		}
+	}, [note, reset])
+
 	if (!note) {
 		return (
 			<View className="flex justify-center items-center h-screen bg-[#1e1e1e]">
@@ -58,7 +68,7 @@ export default function ViewNote() {
 		)
 	}
 
-	const { _id, title, content } = note
+	const { _id } = note
 
 	const onSubmit: SubmitHandler<FieldValues> = async (data) => {
 		const t = await updateNote(_id, data.title, data.content)
@@ -84,7 +94,6 @@ export default function ViewNote() {
 					<Controller
 						control={control}
 						name="title"
-						defaultValue={title}
 						rules={{
 							required: "Title is required",
 							pattern: {
@@ -130,7 +139,6 @@ export default function ViewNote() {
 					<Controller
 						control={control}
 						name="content"
-						defaultValue={content}
 						rules={{
 							required: "Content is required",
 							minLength: {

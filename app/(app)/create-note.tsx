@@ -1,6 +1,7 @@
 import { useNote } from "@/hooks/useNote"
-import { router } from "expo-router"
-import React from "react"
+import { useFocusEffect } from "@react-navigation/native"
+import { useRouter } from "expo-router"
+import React, { useCallback } from "react"
 import {
 	Controller,
 	FieldValues,
@@ -12,10 +13,12 @@ import Toast from "react-native-root-toast"
 
 export default function CreateNote() {
 	const { newNote } = useNote()
+	const router = useRouter()
 	const {
 		control,
 		handleSubmit,
 		formState: { errors },
+		reset,
 	} = useForm()
 
 	const onSubmit: SubmitHandler<FieldValues> = async (data) => {
@@ -37,6 +40,12 @@ export default function CreateNote() {
 			})
 		}
 	}
+
+	useFocusEffect(
+		useCallback(() => {
+			reset()
+		}, [reset])
+	)
 
 	return (
 		<View className="flex-1 bg-[#1e1e1e] p-4">

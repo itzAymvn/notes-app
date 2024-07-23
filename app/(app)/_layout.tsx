@@ -87,6 +87,8 @@ export default function AppLayout() {
 				<Drawer.Screen
 					name="edit-note"
 					options={{
+						drawerLabel: "Edit Note",
+						title: "Edit Note",
 						drawerItemStyle: { display: "none" },
 					}}
 				/>

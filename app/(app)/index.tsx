@@ -1,20 +1,19 @@
 import Loading from "@/components/Loading"
+import NoNotes from "@/components/NoNotes"
+import Note from "@/components/Note"
 import { Colors } from "@/constants/Colors"
 import { useNote } from "@/hooks/useNote"
 import { Feather } from "@expo/vector-icons"
-import dayjs from "dayjs"
 import { router } from "expo-router"
 import { useEffect, useMemo, useRef, useState } from "react"
 import {
-	Keyboard,
-	RefreshControl,
-	ScrollView,
-	Text,
-	TextInput,
-	ToastAndroid,
-	TouchableOpacity,
-	TouchableWithoutFeedback,
-	View,
+    Keyboard,
+    RefreshControl,
+    ScrollView,
+    TextInput,
+    ToastAndroid,
+    TouchableOpacity,
+    View
 } from "react-native"
 
 export default function Index() {
@@ -117,59 +116,6 @@ export default function Index() {
 
 	if (isLoading) return <Loading />
 
-	const Note = ({
-		note,
-	}: {
-		note: {
-			_id: string
-			title: string
-			content: string
-			createdAt: string
-			updatedAt: string
-		}
-	}) => {
-		const { _id, title, content, createdAt, updatedAt } = note
-		const dateToUse = updatedAt > createdAt ? updatedAt : createdAt
-		const isSelected = selectedNotes.has(_id)
-
-		return (
-			<TouchableWithoutFeedback
-				key={_id}
-				onLongPress={() => handleLongPressNote(_id)}
-				onPress={() =>
-					isSelectionMode
-						? handleSelectNote(_id)
-						: router.push(`/edit-note?id=${_id}`)
-				}
-			>
-				<View
-					className={`bg-[#2a2a2a] p-6 rounded-xl shadow-lg mb-4 ${
-						isSelected ? "opacity-30" : ""
-					}`}
-				>
-					<View className="flex flex-row items-center mb-2">
-						<Feather name="edit" size={24} color={Colors.accent} />
-						<Text className="text-accent font-bold text-xl ml-2">
-							{title}
-						</Text>
-					</View>
-
-					<Text className="text-white text-lg">
-						{content.length > 100
-							? `${content.slice(0, 100)}... ${
-									content.length - 100
-							  } more`
-							: content}
-					</Text>
-
-					<Text className="text-accent text-xs text-right mt-2">
-						{dayjs(dateToUse).format("DD MMM YYYY HH:mm")}
-					</Text>
-				</View>
-			</TouchableWithoutFeedback>
-		)
-	}
-
 	const Notes = () => {
 		return (
 			<>
@@ -194,45 +140,19 @@ export default function Index() {
 							)
 						})
 						.map((note) => {
-							return <Note key={note._id} note={note} />
+							return (
+								<Note
+									key={note._id}
+									note={note}
+									isSelected={selectedNotes.has(note._id)}
+									isSelectionMode={isSelectionMode}
+									handleLongPressNote={handleLongPressNote}
+									handleSelectNote={handleSelectNote}
+								/>
+							)
 						})}
 				</ScrollView>
 			</>
-		)
-	}
-
-	const NoNotes = () => {
-		return (
-			<ScrollView
-				className="flex bg-[#1e1e1e]"
-				showsHorizontalScrollIndicator={false}
-				showsVerticalScrollIndicator={false}
-				keyboardShouldPersistTaps="never"
-				contentContainerStyle={{ flexGrow: 1, paddingBottom: 100 }}
-				refreshControl={
-					<RefreshControl
-						refreshing={refreshing}
-						onRefresh={onRefresh}
-						colors={[Colors.accent]}
-					/>
-				}
-			>
-				<View className="p-6 rounded-lg shadow-lg bg-[#2a2a2a] flex items-center">
-					<Feather
-						name="alert-circle"
-						size={48}
-						color={Colors.accent}
-					/>
-					<Text className="text-white text-xl font-bold mt-4">
-						No notes found
-					</Text>
-					<Text className="text-white text-sm mt-2 text-center">
-						{search === ""
-							? "You haven't created any notes yet. Tap the '+' button below to add your first note!"
-							: "Couldn't find any notes matching your search query."}
-					</Text>
-				</View>
-			</ScrollView>
 		)
 	}
 
@@ -258,7 +178,15 @@ export default function Index() {
 				</View>
 
 				<View className="flex flex-col w-full h-full max-w-md mx-auto">
-					{notesState.length > 0 ? <Notes /> : <NoNotes />}
+					{notesState.length > 0 ? (
+						<Notes />
+					) : (
+						<NoNotes
+							search={search}
+							refreshing={refreshing}
+							onRefresh={onRefresh}
+						/>
+					)}
 				</View>
 
 				<View className="absolute bottom-4 right-4 flex flex-row">

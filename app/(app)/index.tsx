@@ -7,13 +7,13 @@ import { Feather } from "@expo/vector-icons"
 import { router } from "expo-router"
 import { useEffect, useMemo, useRef, useState } from "react"
 import {
-    Keyboard,
-    RefreshControl,
-    ScrollView,
-    TextInput,
-    ToastAndroid,
-    TouchableOpacity,
-    View
+	Keyboard,
+	RefreshControl,
+	ScrollView,
+	TextInput,
+	ToastAndroid,
+	TouchableOpacity,
+	View,
 } from "react-native"
 
 export default function Index() {
@@ -29,15 +29,15 @@ export default function Index() {
 	const textInputRef = useRef<TextInput>(null)
 
 	useEffect(() => {
-		const showSubscription = Keyboard.addListener("keyboardDidShow", () =>
+		const keyboardDidShow = Keyboard.addListener("keyboardDidShow", () =>
 			setKeyboardStatus("display")
 		)
-		const hideSubscription = Keyboard.addListener("keyboardDidHide", () =>
+		const keyboardDidHide = Keyboard.addListener("keyboardDidHide", () =>
 			setKeyboardStatus("none")
 		)
 		return () => {
-			showSubscription.remove()
-			hideSubscription.remove()
+			keyboardDidShow.remove()
+			keyboardDidHide.remove()
 		}
 	}, [])
 

@@ -43,7 +43,7 @@ export default function SignUp() {
 			<ImageBackground
 				source={Images.auth}
 				blurRadius={2}
-				className="flex-1 justify-center items-center px-4 bg-login"
+				className="flex-1 justify-center items-center px-4 bg-[#1e1e1e] w-screen"
 			>
 				<View className="w-full max-w-sm">
 					<Text className="text-2xl font-bold text-center text-accent mb-2 uppercase">

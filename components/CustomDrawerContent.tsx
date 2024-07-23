@@ -40,7 +40,9 @@ export default function CustomDrawerContent(
 				>
 					<View className="flex flex-row items-center">
 						<FontAwesome name="sign-out" size={24} color="white" />
-						<Text className="text-white ml-2">Sign Out</Text>
+						<Text className="text-white ml-2 font-bold uppercase">
+							Sign Out
+						</Text>
 					</View>
 				</TouchableOpacity>
 			</View>
